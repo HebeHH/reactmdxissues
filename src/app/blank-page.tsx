@@ -1,7 +1,5 @@
 import Link from "next/link";
 
-console.log(process.env.NEXT_PUBLIC_CLIENT_URL);
-
 export default function Home() {
     return (
         <div className="max-w-prose mx-auto">

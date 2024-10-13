@@ -8,6 +8,8 @@ This is a cry for help.
 
 I'm overhauling my blog in [NextJs](https://nextjs.org/), and my expectation was that [React](https://react.dev/) and [Markdown](https://en.wikipedia.org/wiki/Markdown) are both established enough technologies that they would kinda just **work**. Footnotes and latex aren't exactly edge cases either. Unfortunately, footnotes are failing entirely and latex won't work remote.
 
+I created this repo/website as a testbed to try and fix these issues. Given that I haven't fully resolved them, it's now functioning as an illustration therein.
+
 A more detailed journal of my struggles is on [my blog](shebecoding.com/articles/markdownissues)
 
 ## Stack, Code, Background
@@ -60,4 +62,52 @@ This is probably because `next-mdx-remote` is doing some kind of parsing that's 
 
 **Examples and try-it:**
 
-See [this page](/plain) for how Latex succeeds when it's served with normal file routing and the correct plugins.
+See [this page](/plain) for how Latex succeeds when it's served with normal file routing and the correct plugins. The code for this route is [here](https://github.com/HebeHH/reactmdxissues/tree/main/src/app/plain) on github; it's very straightforward.
+
+Meanwhile [the remote MDX page](/remote) served here can only show a screenshot of the error message, otherwise I'd crash the app. To generate this yourself, clone the [git repo](https://github.com/HebeHH/reactmdxissues) and uncomment the `environment = test` line in [this page](https://github.com/HebeHH/reactmdxissues/blob/main/src/app/remote/page.tsx), then run `bun run build`.
+
+### Footnotes
+
+Footnotes in Markdown exhibit unexpected behavior, particularly when mixing single-string and longer-string footnotes.
+
+**Background info:**
+
+-   Footnotes are typically coded like `[^1]` in the text, with a corresponding `[^1]: Footnote content` at the bottom of the document.
+-   The expected behavior is a clickable link at the reference point, leading to the footnote content at the bottom of the page.
+
+**The problem:**
+Footnote behavior is inconsistent and often fails to work as expected.
+
+1. Single-string footnotes:
+
+    - Create a `<sup>` footnote in the text
+    - Generate a link, but to a page `domain/singleString` instead of the bottom of the current page.
+    - No trace of the footnote text anywhere but the link; nothing at the bottom of the page
+
+2. Longer-string footnotes:
+    - Cause all subsequent footnotes to stop working entirely.
+    - Are treated as plain text, without creating any links or references.
+
+**Examples:**
+
+-   Working single-string footnote: [^1]
+-   Another working single-string: [^2]
+-   Long-string footnote breaking subsequent ones: [^3]
+-   Failed single-string after a long one: [^4]
+-   Another failed long-string: [^5]
+
+**Suspicions:**
+The parser may not be extracting the post-`[^]:` footnote reference correctly, causing a cascading failure in the footnote system.
+
+**Examples:**
+The footnotes in this page should give a decent example.
+
+You can also see this on [this page](/plain) for additional examples.
+
+Compare this to [the actual code](https://github.com/HebeHH/reactmdxissues/blob/main/src/app/plain/page.mdx?plain=1) in the Github.
+
+[^1]: singleString
+[^2]: anotherSingleString
+[^3]: This is a longer test footnote that breaks subsequent footnotes
+[^4]: FailedSingleString
+[^5]: Another long footnote that doesn't work

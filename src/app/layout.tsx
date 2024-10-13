@@ -70,7 +70,9 @@ export default function RootLayout({
                         </ul>
                     </nav>
                 </header>
-                <main className="container mx-auto px-2 py-8">{children}</main>
+                <main className="container mx-auto px-2 max-w-lg py-8">
+                    {children}
+                </main>
                 <footer className="bg-blue-100 text-blue-600 py-4">
                     <div className="container mx-auto px-4 text-center">
                         © 2024 shebecoding. All rights reserved.

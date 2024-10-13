@@ -21,16 +21,40 @@ body {
 }
 
 main a {
-    color: red;
+    color: rgb(72, 255, 39);
 }
 
 main h1 {
     font-size: 2rem;
-    color: yellow;
+    color: rgb(255, 255, 255);
+    margin-top: 1em;
 }
 main h2 {
     font-size: 1.5rem;
-    color: yellow;
+    color: rgb(254, 254, 0);
+    margin-top: 1em;
+}
+main h3 {
+    font-size: 1.5rem;
+    color: rgb(255, 175, 55);
+    margin-top: 1em;
+}
+
+main ul,
+ol {
+    margin-left: 1.5rem;
+    list-style: disc;
+    margin-top: 0.5em;
+}
+main p {
+    margin-top: 0.5em;
+}
+
+pre {
+    background: #b5fffe;
+    padding: 1em;
+    margin-top: 1em;
+    overflow-x: auto;
 }
 
 @layer utilities {
