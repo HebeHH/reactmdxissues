@@ -1,5 +1,4 @@
 import createMDX from "@next/mdx";
-import rehypeMathjax from "rehype-mathjax";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 

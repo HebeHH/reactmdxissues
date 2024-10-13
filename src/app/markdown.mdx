@@ -1,11 +1,63 @@
 # Help needed! MDX, React, footnotes and Latex 😢
 
-I am deeply confused by the way footnotes and Latex are working in MDX React. This is a cry for help.
+Footnotes in MDX React are... weird. Trying to use Latex in `next-mdx-remote` can break the entire site.
 
-My expectation was that React and markdown are both established enough technologies that they would kinda work. Footnotes and latex aren't exactly edge cases either. Unfortunately, footnotes are failing entirely and latex won't work remote.
+This is a cry for help.
 
-I'm pretty inexperienced at frontend so would appreciate help.
+## Background
 
-## Stack and Code
+I'm overhauling my blog in [NextJs](https://nextjs.org/), and my expectation was that [React](https://react.dev/) and [Markdown](https://en.wikipedia.org/wiki/Markdown) are both established enough technologies that they would kinda just **work**. Footnotes and latex aren't exactly edge cases either. Unfortunately, footnotes are failing entirely and latex won't work remote.
 
-Github:
+A more detailed journal of my struggles is on [my blog](shebecoding.com/articles/markdownissues)
+
+## Stack, Code, Background
+
+Github for this test website: [github.com/HebeHH/reactmdxissues](https://github.com/HebeHH/reactmdxissues)
+
+Stack:
+
+-   Framework: NextJs and React
+-   Language: Typescript/Javascript
+-   Articles: Markdown/MDX
+-   Libraries: `next-mdx-remote` (remote), `remark-math` and `rehype-katex` (Latex)
+
+## Problems
+
+Currently I am having issues with the following elements when doing MDX in React. I will update this with any new issues and answers:
+
+-   Footnotes
+-   Latex (when using remote)
+
+### Latex
+
+Using Latex in markdown causes buildtime errors.
+
+![Latex crashing the site](/LatexCrash.png)
+
+**Background info:**
+
+-   Latex is coded like `$$\frac{1}{e-x}$$` and should display like $$\frac{1}{e-x}$$.
+-   There's 3 ways to use MDX in NextJs: [file-based routing](https://nextjs.org/docs/app/building-your-application/configuring/mdx#using-file-based-routing), [imports](https://nextjs.org/docs/app/building-your-application/configuring/mdx#using-imports), and [remote](https://nextjs.org/docs/app/building-your-application/configuring/mdx#remote-mdx). My blog was trying to use remote with `next-mdx-remote`.
+
+**The problem:** Using latex with remote routing doesn't work.
+
+Latex with file-based or import routing is fine, as long `remarkMath` and `rehypeKatex` are installed as [instructed](https://mdxjs.com/guides/math/). That's how I displayed the latex above, in this file-routed page.
+
+However, even with those plugins installed, I get build errors with `next-mdx-remote`:
+
+```text
+ReferenceError: e is not defined
+at \_createMdxContent (eval at compileMDX (file:///Users/hebe/Dropbox/Code/website/testing/node_modules/next-mdx-remote/dist/rsc.js:25:31), <anonymous>:21:53)
+at MDXContent (eval at compileMDX (file:///Users/hebe/Dropbox/Code/website/testing/node_modules/next-mdx-remote/dist/rsc.js:25:31), <anonymous>:65:8)
+at eh (/Users/hebe/Dropbox/Code/website/testing/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:134657)
+....
+✓ Generating static pages (8/8)
+```
+
+**Suspicions:**
+
+This is probably because `next-mdx-remote` is doing some kind of parsing that's different from the native parsing.
+
+**Examples and try-it:**
+
+See [this page](/plain) for how Latex succeeds when it's served with normal file routing and the correct plugins.

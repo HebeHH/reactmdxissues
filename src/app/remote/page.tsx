@@ -1,23 +1,41 @@
+"use client";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import MDXComponents from "@/components/MDXComponents";
-import fs from "fs";
-import path from "path";
+import Image from "next/image";
 
 async function getMDXContent() {
-    const filePath = path.join(process.cwd(), "src", "markdown", `test.mdx`);
-    const fileContent = fs.readFileSync(filePath, "utf8");
-    return fileContent;
+    const res = await fetch("/test.mdx");
+    const markdown = await res.text();
+    return markdown;
 }
 
 export default async function ArticlePage() {
-    const content = await getMDXContent();
+    let environment;
+    environment = "SERVING";
+    // Uncomment the following line to see the Remote Latex error
+    // environment = "TEST";
 
-    return (
-        <div className="">
-            <article className="flex flex-col items-center ">
-                {/* <article className="prose lg:prose-xl"> */}
-                <MDXRemote source={content} components={MDXComponents} />
-            </article>
-        </div>
-    );
+    if (environment === "TEST") {
+        const content = await getMDXContent();
+
+        return (
+            <div className="">
+                <article className="flex flex-col items-center">
+                    <MDXRemote source={content} components={MDXComponents} />
+                </article>
+            </div>
+        );
+    } else {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <Image
+                    src="/LatexCrash.png"
+                    alt="Latex Crash"
+                    width={800}
+                    height={600}
+                    className="max-w-full h-auto"
+                />
+            </div>
+        );
+    }
 }
