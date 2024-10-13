@@ -2,7 +2,7 @@
 
 This is an example repo for issues I've run into trying to do MDX with React.
 
-To understand the issues, please visit the website itself for demos and descriptions: 
+To understand the issues, please visit the website itself for demos and descriptions: https://react-mdx-issues.vercel.app/
 
 If you think you can fix any of these issues, just clone this repo and start coding 🥰
 
